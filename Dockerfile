@@ -1,13 +1,15 @@
 FROM ubuntu:16.04
 MAINTAINER cd <cleardevice@gmail.com>
 
-RUN apt-get update && \
-    apt-get install -y nano libsnappy-dev libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ && \
+ENV PIKA_VERSION=2.3.2
 
-    git clone https://github.com/Qihoo360/pika.git /tmp/code --depth 1 && \
-    cd /tmp/code && \
+RUN apt-get update && \
+    apt-get install -y nano libsnappy-dev libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ curl && \
+
+    curl -Ls https://github.com/Qihoo360/pika/releases/download/v${PIKA_VERSION}/pika-linux-x86_64-v${PIKA_VERSION}.tar.bz2 | tar -xj -C /tmp
+    cd /tmp/pika* && \
     make && \
-    mv /tmp/code/output /pika && \
+    mv /tmp/pika*/output /pika && \
 
     apt-get remove --purge -y libgflags-dev libprotobuf-dev git make g++ && \
     apt-get -y autoremove && \
