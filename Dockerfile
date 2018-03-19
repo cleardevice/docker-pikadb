@@ -2,14 +2,14 @@ FROM ubuntu:16.04
 MAINTAINER cd <cleardevice@gmail.com>
 
 RUN apt-get update && \
-    apt-get install -y nano libsnappy-dev libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ && \
+    apt-get install -y nano libgoogle-glog0v5 libsnappy-dev libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ && \
 
     git clone https://github.com/Qihoo360/pika.git /tmp/code --depth 1 && \
     cd /tmp/code && \
     make && \
     mv /tmp/code/output /pika && \
 
-    apt-get remove --purge -y libgflags-dev libprotobuf-dev git make g++ && \
+    apt-get remove --purge -y libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ && \
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /tmp/* /var/tmp/* && \
