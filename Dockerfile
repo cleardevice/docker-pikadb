@@ -4,14 +4,15 @@ MAINTAINER cd <cleardevice@gmail.com>
 ENV PIKA_VERSION=2.3.2
 
 RUN apt-get update && \
-    apt-get install -y nano libsnappy-dev libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++ curl && \
+    apt-get install -y nano libgoogle-glog-dev libsnappy-dev git make g++ && \
+# libprotobuf-dev
 
-    curl -Ls https://github.com/Qihoo360/pika/releases/download/v${PIKA_VERSION}/pika-linux-x86_64-v${PIKA_VERSION}.tar.bz2 | tar -xj -C /tmp
-    cd /tmp/pika* && \
+    git clone https://github.com/Qihoo360/pika.git /tmp/code && \
+    cd /tmp/code && git checkout v${PIKA_VERSION} && \
     make && \
-    mv /tmp/pika*/output /pika && \
+    mv /tmp/code/output /pika && \
 
-    apt-get remove --purge -y libgflags-dev libprotobuf-dev git make g++ && \
+    apt-get remove --purge -y git make g++ && \
     apt-get -y autoremove && \
     apt-get -y clean && \
     rm -rf /tmp/* /var/tmp/* && \
