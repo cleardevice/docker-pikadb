@@ -1,0 +1,46 @@
+dimg 'pika' do
+  docker.from 'ubuntu:16.04'
+
+  artifact do
+    shell do
+      install do
+        run 'apt-get update',
+            'apt-get install -y libgoogle-glog-dev libgflags-dev libprotobuf-dev git make g++',
+            'git clone https://github.com/Qihoo360/pika.git /tmp/code --depth 1'
+      end
+      build_artifact do
+        run('make -C /tmp/code')
+      end
+    end
+
+    export('/tmp/code/output') do
+      to('/pika')
+      after('install')
+    end
+  end
+
+  mount '/var/lib/apt/lists' do
+    from :tmp_dir
+  end
+
+  mount '/var/cache/apt' do
+    from :build_dir
+  end
+
+  shell do
+    before_install do
+      run 'apt-get update',
+          'apt-get install -y nano libgoogle-glog0v5 libsnappy-dev',
+
+          'groupadd -g 242 pika',
+          'useradd -s /bin/false -g 242 -u 242 pika'
+    end
+    before_setup do
+       run 'chown pika:pika -R /pika'
+    end
+  end
+
+  docker.workdir '/pika'
+  docker.expose 9221
+  docker.cmd '/pika/bin/pika -c /pika/conf/pika.conf'
+end
