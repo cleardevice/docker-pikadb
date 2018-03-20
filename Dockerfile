@@ -4,8 +4,8 @@ MAINTAINER cd <cleardevice@gmail.com>
 RUN apt-get update && \
     apt-get install -y nano libgoogle-glog-dev libsnappy-dev git make g++ && \
 
-    git clone https://github.com/Qihoo360/pika.git /tmp/code && \
-    cd /tmp/code && git checkout v${PIKA_VERSION} && \
+    git clone https://github.com/Qihoo360/pika.git /tmp/code --depth 1 && \
+    cd /tmp/code && \
     make && \
     mv /tmp/code/output /pika && \
 
