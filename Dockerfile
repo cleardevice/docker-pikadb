@@ -1,7 +1,7 @@
 FROM ubuntu:16.04
 MAINTAINER cd <cleardevice@gmail.com>
 
-ENV PIKA_VERSION=2.3.3
+ENV PIKA_VERSION=2.3.4
 
 RUN apt-get update && \
     apt-get install -y nano libgoogle-glog-dev libsnappy-dev git make g++ && \
